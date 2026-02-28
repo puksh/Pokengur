@@ -245,6 +245,7 @@ public class ImageUtil {
         String discCacheAllowance = pref.getString(SettingsActivity.KEY_CACHE_SIZE, SettingsActivity.CACHE_SIZE_512MB);
         String threadSize = pref.getString(SettingsActivity.KEY_THREAD_SIZE, SettingsActivity.THREAD_SIZE_5);
         String cacheKey = pref.getString(SettingsActivity.KEY_CACHE_LOC, SettingsActivity.CACHE_LOC_INTERNAL);
+        boolean batterySaverMode = pref.getBoolean(SettingsActivity.KEY_BATTERY_SAVER_MODE, false);
         File baseDir = getCacheDirectory(context, cacheKey);
         File dir = new File(baseDir, "image_cache");
 
@@ -272,23 +273,34 @@ public class ImageUtil {
                 break;
         }
 
-        switch (threadSize) {
-            case SettingsActivity.THREAD_SIZE_7:
-                threadPoolSize = 7;
-                break;
+        // Apply battery saver mode adjustments
+        if (batterySaverMode) {
+            // Reduce cache size by half (but not below 128MB)
+            if (discCacheSize > 0) {
+                discCacheSize = Math.max(discCacheSize / 2, 128 * 1024 * 1024);
+            }
+            // Force thread pool size to 3 for battery saver mode
+            threadPoolSize = 3;
+            LogUtil.v(TAG, "Battery saver mode enabled: Reduced cache size and thread pool");
+        } else {
+            switch (threadSize) {
+                case SettingsActivity.THREAD_SIZE_7:
+                    threadPoolSize = 7;
+                    break;
 
-            case SettingsActivity.THREAD_SIZE_10:
-                threadPoolSize = 10;
-                break;
+                case SettingsActivity.THREAD_SIZE_10:
+                    threadPoolSize = 10;
+                    break;
 
-            case SettingsActivity.THREAD_SIZE_12:
-                threadPoolSize = 12;
-                break;
+                case SettingsActivity.THREAD_SIZE_12:
+                    threadPoolSize = 12;
+                    break;
 
-            case SettingsActivity.THREAD_SIZE_5:
-            default:
-                threadPoolSize = 5;
-                break;
+                case SettingsActivity.THREAD_SIZE_5:
+                default:
+                    threadPoolSize = 5;
+                    break;
+            }
         }
 
         if (discCacheSize > 0) {
@@ -351,10 +363,14 @@ public class ImageUtil {
      * @return
      */
     public static DisplayImageOptions.Builder getDisplayOptionsForGallery() {
-        return getDefaultDisplayOptions()
+        DisplayImageOptions.Builder builder = getDefaultDisplayOptions()
                 .displayer(new FadeInBitmapDisplayer(250, true, false, false))
-                .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY);
+        
+        // Check if battery saver mode is enabled and use lower quality bitmap config
+        // Note: We can't access preferences here without context, so this will be handled
+        // by the caller if they want to apply battery saver optimizations
+        return builder.bitmapConfig(Bitmap.Config.RGB_565);
     }
 
     /**
@@ -370,7 +386,7 @@ public class ImageUtil {
 
     public static DisplayImageOptions.Builder getDisplayOptionsForComments() {
         return getDefaultDisplayOptions()
-                .displayer(new CircleBitmapDisplayer(OpengurApp.getInstance().getResources()));
+                .displayer(new CircleBitmapDisplayer(PokengurApp.getInstance().getResources()));
     }
 
     public static DisplayImageOptions.Builder getDisplayOptionsForFullscreen() {

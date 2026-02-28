@@ -63,6 +63,7 @@
     </string-array>
 
     <string-array name="pref_thread_items">
+        <item>3 Threads (Battery Saver)</item>
         <item>5 Threads</item>
         <item>7 Threads</item>
         <item>10 Threads</item>
@@ -126,6 +127,7 @@
     </string-array>
 
     <string-array name="pref_thread_keys" translatable="false">
+        <item>3</item>
         <item>5</item>
         <item>7</item>
         <item>10</item>

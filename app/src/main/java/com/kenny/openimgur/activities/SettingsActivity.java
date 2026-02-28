@@ -57,6 +57,12 @@ public class SettingsActivity extends BaseActivity {
 
     public static final String KEY_MOSAIC_VIEW = "mosaicView";
 
+    public static final String KEY_DISABLE_VIDEO_AUTOPLAY = "disableVideoAutoplay";
+
+    public static final String KEY_BATTERY_SAVER_MODE = "batterySaverMode";
+
+    public static final String KEY_REDUCE_BACKGROUND_ACTIVITY = "reduceBackgroundActivity";
+
     // Values
     public static final String CACHE_SIZE_UNLIMITED = "unlimited";
 
@@ -107,7 +113,6 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     protected int getStyleRes() {
-        return theme.isDarkTheme ? R.style.Theme_Opengur_Dark : R.style.Theme_Opengur_Light_DarkActionBar;
+        return theme.isDarkTheme ? R.style.Theme_Pokengur_Dark : R.style.Theme_Pokengur_Light_DarkActionBar;
     }
 }
-PokengurPokengur

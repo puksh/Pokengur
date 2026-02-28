@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.kenny.openimgur.R;
+import com.kenny.openimgur.activities.SettingsActivity;
 import com.kenny.openimgur.classes.ImgurHandler;
 import com.kenny.openimgur.classes.ImgurPhoto;
 import com.kenny.openimgur.classes.VideoCache;
@@ -177,8 +178,14 @@ public class FullScreenPhotoFragment extends BaseFragment {
             ((GifDrawable) gifImageView.getDrawable()).recycle();
         } else if (videoView != null) {
             videoView.stopPlayback();
+            videoView.suspend(); // Release media player resources
         } else if (imageView != null) {
             imageView.recycle();
+        }
+
+        // Clear image loader memory cache for this fragment
+        if (getActivity() != null) {
+            ImageUtil.getImageLoader(getActivity()).clearMemoryCache();
         }
 
         super.onDestroyView();
@@ -238,7 +245,9 @@ public class FullScreenPhotoFragment extends BaseFragment {
             });
 
             videoView.setVideoPath(file.getAbsolutePath());
-            if (getUserVisibleHint()) videoView.start();
+            // Check if video autoplay is disabled in settings
+            boolean disableVideoAutoplay = app.getPreferences().getBoolean(SettingsActivity.KEY_DISABLE_VIDEO_AUTOPLAY, false);
+            if (getUserVisibleHint() && !disableVideoAutoplay) videoView.start();
         } else {
             VideoCache.getInstance().putVideo(url, new VideoCache.VideoCacheListener() {
                 @Override
@@ -276,7 +285,9 @@ public class FullScreenPhotoFragment extends BaseFragment {
                     });
 
                     videoView.setVideoPath(file.getAbsolutePath());
-                    if (getUserVisibleHint()) videoView.start();
+                    // Check if video autoplay is disabled in settings
+                    boolean disableVideoAutoplay = app.getPreferences().getBoolean(SettingsActivity.KEY_DISABLE_VIDEO_AUTOPLAY, false);
+                    if (getUserVisibleHint() && !disableVideoAutoplay) videoView.start();
                     if (loadingView != null) loadingView.setVisibility(View.GONE);
                 }
 
@@ -572,7 +583,11 @@ public class FullScreenPhotoFragment extends BaseFragment {
             if (gifImageView != null && gifImageView.getDrawable() instanceof GifDrawable) {
                 ((GifDrawable) gifImageView.getDrawable()).start();
             } else if (videoView != null && videoView.getDuration() > 0) {
-                videoView.start();
+                // Check if video autoplay is disabled in settings
+                boolean disableVideoAutoplay = app.getPreferences().getBoolean(SettingsActivity.KEY_DISABLE_VIDEO_AUTOPLAY, false);
+                if (!disableVideoAutoplay) {
+                    videoView.start();
+                }
             } else {
                 if (handler != null) handler.sendEmptyMessageDelayed(0, GIF_DELAY);
             }

@@ -102,6 +102,31 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/battery_optimizations">
+
+        <CheckBoxPreference
+            android:key="batterySaverMode"
+            android:title="@string/pref_battery_saver_title"
+            android:summaryOn="@string/pref_battery_saver_on"
+            android:summaryOff="@string/pref_battery_saver_off"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            android:key="disableVideoAutoplay"
+            android:title="@string/pref_disable_video_autoplay_title"
+            android:summaryOn="@string/pref_disable_video_autoplay_on"
+            android:summaryOff="@string/pref_disable_video_autoplay_off"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="reduceBackgroundActivity"
+            android:title="@string/pref_reduce_background_title"
+            android:summaryOn="@string/pref_reduce_background_on"
+            android:summaryOff="@string/pref_reduce_background_off"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/notifications">
 
         <CheckBoxPreference

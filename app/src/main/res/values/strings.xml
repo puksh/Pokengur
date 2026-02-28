@@ -200,6 +200,18 @@
     <string name="pref_immersive_mode_on">Enable Immersive mode</string>
     <string name="pref_immersive_mode_off">Disable Immersive Mode</string>
     <string name="pref_privacy_policy">Privacy Policy</string>
+    
+    <!-- Battery Optimizations -->
+    <string name="battery_optimizations">Battery Optimizations</string>
+    <string name="pref_battery_saver_title">Battery Saver Mode</string>
+    <string name="pref_battery_saver_on">Reduce image quality and background activity</string>
+    <string name="pref_battery_saver_off">Use normal performance settings</string>
+    <string name="pref_disable_video_autoplay_title">Disable Video Autoplay</string>
+    <string name="pref_disable_video_autoplay_on">Videos require manual playback</string>
+    <string name="pref_disable_video_autoplay_off">Videos autoplay when visible</string>
+    <string name="pref_reduce_background_title">Reduce Background Activity</string>
+    <string name="pref_reduce_background_on">Minimize background network requests</string>
+    <string name="pref_reduce_background_off">Allow normal background activity</string>
 
     <!-- Experimental Settings -->
     <string name="pref_experimental_settings">Experimental Settings</string>

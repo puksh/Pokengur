@@ -82,6 +82,14 @@ public class AlarmReceiver extends BroadcastReceiver {
                 break;
         }
 
+        // Check if reduced background activity is enabled
+        boolean reduceBackgroundActivity = pref.getBoolean(SettingsActivity.KEY_REDUCE_BACKGROUND_ACTIVITY, false);
+        if (reduceBackgroundActivity) {
+            // Double the update time to reduce background network requests
+            updateTime *= 2;
+            LogUtil.v(TAG, "Reduced background activity enabled: Doubling notification check interval");
+        }
+
         long nextUpdate = System.currentTimeMillis() + updateTime;
 
         if (LogUtil.SHOULD_WRITE_LOGS) {
