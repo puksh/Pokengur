@@ -163,9 +163,6 @@
     <string name="pref_nsfw_thumb_title">NSFW Thumbnail</string>
     <string name="pref_nsfw_thumb_on">Allow NSFW thumbnails</string>
     <string name="pref_nsfw_thumb_off">Don\'t allow NSFW thumbnails</string>
-    <string name="pref_crashlytics_title">Anonymous Usage Statistics</string>
-    <string name="pref_crashlytics_on">Anonymous usage statistics will be reported</string>
-    <string name="pref_crashlytics_off">Anonymous usage statistics will not be reported</string>
     <string name="pref_dark_theme_title">Dark Theme</string>
     <string name="pref_dark_theme_on">Dark mode enabled</string>
     <string name="pref_dark_theme_off">Dark mode disabled</string>
@@ -208,12 +205,7 @@
     <string name="pref_reduce_background_off">Allow normal background activity</string>
 
     <!-- Experimental Settings -->
-    <string name="pref_experimental_settings">Experimental Settings</string>
-    <string name="pref_experimental_settings_summary">Change experimental settings at your own risk</string>
-    <string name="pref_experimental_warning_msg">WARNING! Changing any of these settings may cause the app to become unstable. Proceed with caution.</string>
     <string name="pref_experimental_thread_size">Image Thread Pool Size</string>
-    <string name="pref_experimental_reset">Reset to defaults</string>
-    <string name="pref_experimental_reset_msg">Are you sure you want to reset all values to their defaults?</string>
 
     <!-- Topics -->
     <string name="topic">Topic</string>

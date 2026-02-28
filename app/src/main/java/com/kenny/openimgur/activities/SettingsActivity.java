@@ -11,13 +11,11 @@ import com.kenny.openimgur.R;
  */
 public class SettingsActivity extends BaseActivity {
     // Keys
-    private static final String KEY_IS_EXPERIMENTAL = "isExperimental";
 
     public static final String KEY_TAGS = "autoLoadTags";
 
     public static final String KEY_THUMBNAIL_QUALITY = "thumbnailQuality";
 
-    public static final String KEY_CRASHLYTICS = "crashlytics";
 
     public static final String KEY_NSFW_THUMBNAILS = "NSFWThumbnails";
 
@@ -99,9 +97,8 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean isExperimental = getIntent().getBooleanExtra(KEY_IS_EXPERIMENTAL, false);
-        getSupportActionBar().setTitle(isExperimental ? R.string.pref_experimental_settings : R.string.action_settings);
-        setContentView(isExperimental ? R.layout.activity_settings_experimental : R.layout.activity_settings);
+        getSupportActionBar().setTitle(R.string.action_settings);
+        setContentView(R.layout.activity_settings);
 
     }
 
@@ -109,9 +106,7 @@ public class SettingsActivity extends BaseActivity {
         return new Intent(context, SettingsActivity.class);
     }
 
-    public static Intent createIntent(Context context, boolean isExperimental) {
-        return createIntent(context).putExtra(KEY_IS_EXPERIMENTAL, isExperimental);
-    }
+    
 
     @Override
     protected int getStyleRes() {

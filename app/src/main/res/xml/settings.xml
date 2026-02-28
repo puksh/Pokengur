@@ -21,7 +21,7 @@
 
         <SwitchPreference
             android:key="amoledTheme"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:summaryOn="@string/pref_amoled_theme_on"
             android:summaryOff="@string/pref_amoled_theme_off"
             android:title="@string/pref_amoled_theme_title" />
@@ -105,8 +105,6 @@
             android:summaryOff="@string/pref_battery_saver_off"
             android:defaultValue="false" />
 
-        <!-- Video autoplay is controlled via the combined "Autoplay" setting above -->
-
         <CheckBoxPreference
             android:key="reduceBackgroundActivity"
             android:title="@string/pref_reduce_background_title"
@@ -121,7 +119,7 @@
         <CheckBoxPreference
             android:key="notifications"
             android:title="@string/pref_notification_title"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <ListPreference
             android:key="notificationFrequency"
@@ -137,6 +135,7 @@
         <CheckBoxPreference
             android:key="notificationVibrate"
             android:title="@string/pref_notification_vibrate"
+            android:icon="@drawable/ic_action_message_24dp"
             android:summaryOn="@string/pref_notification_vibrate_on"
             android:summaryOff="@string/pref_notification_vibrate_off"
             android:defaultValue="true" />
@@ -184,17 +183,12 @@
         android:title="@string/developer"
         android:key="developerSettings">
 
-        <Preference
-            android:key="experimentalSettings"
-            android:title="@string/pref_experimental_settings"
-            android:summary="@string/pref_experimental_settings_summary" />
-
-        <CheckBoxPreference
-            android:key="crashlytics"
-            android:title="@string/pref_crashlytics_title"
-            android:summaryOn="@string/pref_crashlytics_on"
-            android:summaryOff="@string/pref_crashlytics_off"
-            android:defaultValue="false" />
+        <ListPreference
+            android:key="threadSize"
+            android:title="@string/pref_experimental_thread_size"
+            android:entries="@array/pref_thread_items"
+            android:entryValues="@array/pref_thread_keys"
+            android:defaultValue="3" />
 
         <CheckBoxPreference
             android:key="adb"

@@ -51,6 +51,7 @@ public class SettingsFragment extends BasePreferenceFragment implements Preferen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bindListPreference(findPreference(SettingsActivity.KEY_CACHE_SIZE));
+        bindListPreference(findPreference(SettingsActivity.KEY_THREAD_SIZE));
         bindListPreference(findPreference(SettingsActivity.KEY_CACHE_LOC));
         bindListPreference(findPreference(SettingsActivity.KEY_THUMBNAIL_QUALITY));
         bindListPreference(findPreference(SettingsActivity.KEY_NOTIFICATION_FREQUENCY));
@@ -62,7 +63,7 @@ public class SettingsFragment extends BasePreferenceFragment implements Preferen
         findPreference("redditHistory").setOnPreferenceClickListener(this);
         findPreference("mySubreddits").setOnPreferenceClickListener(this);
         findPreference("gallerySearchHistory").setOnPreferenceClickListener(this);
-        findPreference("experimentalSettings").setOnPreferenceClickListener(this);
+        
         findPreference(SettingsActivity.KEY_THEME_NEW).setOnPreferenceClickListener(this);
         findPreference(SettingsActivity.KEY_ADB).setOnPreferenceChangeListener(this);
         findPreference(SettingsActivity.KEY_DARK_THEME).setOnPreferenceChangeListener(this);
@@ -186,10 +187,6 @@ public class SettingsFragment extends BasePreferenceFragment implements Preferen
             case "gallerySearchHistory":
                 SqlHelper.getInstance(getActivity()).deleteFromTable(DBContracts.GallerySearchContract.TABLE_NAME);
                 Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.pref_search_deleted, Snackbar.LENGTH_LONG).show();
-                return true;
-
-            case "experimentalSettings":
-                startActivity(SettingsActivity.createIntent(getActivity(), true));
                 return true;
 
             case "mySubreddits":

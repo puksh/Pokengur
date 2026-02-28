@@ -49,9 +49,9 @@ public class PokengurApp extends Application implements SharedPreferences.OnShar
         stopUserManagerLeak();
         mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mPref.registerOnSharedPreferenceChangeListener(this);
-        mTheme = ImgurTheme.fromPreferences(getResources(), mPref.getInt(SettingsActivity.KEY_THEME_NEW, ImgurTheme.IMGUR.primaryColor));
+        mTheme = ImgurTheme.fromPreferences(getResources(), mPref.getInt(SettingsActivity.KEY_THEME_NEW, getResources().getColor(ImgurTheme.IMGUR.primaryColor)));
         mTheme.isDarkTheme = mPref.getBoolean(SettingsActivity.KEY_DARK_THEME, true);
-        mTheme.isAmoled = mPref.getBoolean(SettingsActivity.KEY_AMOLED_THEME, false);
+        mTheme.isAmoled = mPref.getBoolean(SettingsActivity.KEY_AMOLED_THEME, true);
         mUser = SqlHelper.getInstance(this).getUser();
         if (mUser != null) AlarmReceiver.createNotificationAlarm(this);
         ImageUtil.initImageLoader(getApplicationContext());
