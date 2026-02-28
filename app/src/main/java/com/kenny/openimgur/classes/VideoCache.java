@@ -21,6 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Created by kcampagna on 10/9/14.
@@ -35,6 +39,7 @@ public class VideoCache {
     private File mCacheDir;
 
     private Md5FileNameGenerator mKeyGenerator;
+    private OkHttpClient mHttpClient;
 
     public static VideoCache getInstance() {
         if (mInstance == null) {
@@ -58,6 +63,7 @@ public class VideoCache {
         }
 
         mKeyGenerator = new Md5FileNameGenerator();
+        mHttpClient = new OkHttpClient();
     }
 
     public void setCacheDirectory(File dir) {
@@ -184,30 +190,61 @@ public class VideoCache {
 
                 writeFile = new File(mCacheDir, mKey + ext);
 
-                if (FileUtil.isFileValid(writeFile)) {
-                    LogUtil.v(TAG, "File already exists, deleting existing file and replacing it");
-                    writeFile.delete();
+                // If file exists and is valid, we'll attempt to resume by requesting a Range starting
+                // at the current file size. If server doesn't support Range, we fall back to full download.
+                long existing = 0L;
+                if (writeFile.exists()) {
+                    existing = writeFile.length();
                 }
 
-                writeFile.createNewFile();
+                Request.Builder reqBuilder = new Request.Builder().url(mDownloadUrl).get();
 
-                if (!FileUtil.isFileValid(writeFile)) {
-                    return new FileNotFoundException("Unable to create file for download");
+                if (existing > 0) {
+                    reqBuilder.addHeader("Range", "bytes=" + existing + "-");
                 }
 
-                URL url = new URL(mDownloadUrl);
-                URLConnection connection = url.openConnection();
-                connection.connect();
-                in = connection.getInputStream();
-                buffer = new BufferedOutputStream(new FileOutputStream(writeFile));
-                byte byt[] = new byte[8192];
-                int i;
-                int total = 0;
-                int size = connection.getContentLength();
+                Request req = reqBuilder.build();
 
-                for (long l = 0L; (i = in.read(byt)) != -1; l += i) {
-                    total += i;
-                    buffer.write(byt, 0, i);
+                Response response = mHttpClient.newCall(req).execute();
+
+                if (!response.isSuccessful()) {
+                    // If partial request failed and we had an existing partial file, try without Range
+                    if (existing > 0) {
+                        req = new Request.Builder().url(mDownloadUrl).get().build();
+                        response = mHttpClient.newCall(req).execute();
+                        if (!response.isSuccessful()) {
+                            return new IOException("Failed to download file: " + response.code());
+                        }
+                        // start fresh
+                        existing = 0L;
+                        if (writeFile.exists()) writeFile.delete();
+                        writeFile.createNewFile();
+                    } else {
+                        return new IOException("Failed to download file: " + response.code());
+                    }
+                }
+
+                ResponseBody body = response.body();
+
+                if (body == null) {
+                    return new IOException("Empty response body");
+                }
+
+                long contentLength = body.contentLength();
+                // If contentLength is unknown (-1), we'll report -1 as total
+                int total = (int) existing;
+                int size = contentLength > 0 ? (int) (existing + contentLength) : -1;
+
+                in = body.byteStream();
+
+                // Open file for append when resuming, otherwise overwrite
+                buffer = new BufferedOutputStream(new FileOutputStream(writeFile, existing > 0));
+                byte[] byt = new byte[8192];
+                int read;
+
+                while ((read = in.read(byt)) != -1) {
+                    buffer.write(byt, 0, read);
+                    total += read;
                     publishProgress(total, size);
                 }
 
@@ -215,7 +252,7 @@ public class VideoCache {
                 return writeFile;
             } catch (Exception e) {
                 LogUtil.e(TAG, "An error occurred whiling downloading video", e);
-                if (writeFile != null) writeFile.delete();
+                if (writeFile != null && writeFile.exists()) writeFile.delete();
                 return e;
             } finally {
                 FileUtil.closeStream(in);
