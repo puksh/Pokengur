@@ -7,7 +7,7 @@
 ### Podstawowe informacje techniczne:
 
 - **Nazwa aplikacji**: Pokengur
-- **Wersja**: 5.2.1 (kod wersji: 92)
+- **Wersja**: 5.3.0 (kod wersji: 92)
 - **Pakiet główny**: `com.puksh.pokenimgur`
 - **App ID**: `com.puksh.poken.imgur`
 - **Język programowania**: Java
@@ -48,8 +48,8 @@ $env:JAVA_HOME="C:\Program Files\Java\jdk1.8.0_481"; .\gradlew.bat --no-daemon a
 
 ### Pliki wyjściowe:
 
-- **Debug**: `app/build/outputs/apk/debug/Pokengur-5.2.1-debug.apk`
-- **Release**: `app/build/outputs/apk/release/Pokengur-5.2.1-release.apk`
+- **Debug**: `app/build/outputs/apk/debug/Pokengur-5.3.0-debug.apk`
+- **Release**: `app/build/outputs/apk/release/Pokengur-5.3.0-release.apk`
 
 ### Podpisywanie:
 
