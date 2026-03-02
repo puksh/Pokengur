@@ -1,6 +1,6 @@
-# [Pokengur]
+# Pokengur - Open source Imgur Android App
 
-Open source Imgur Android App [(created by Kennyc1012)](https://github.com/Kennyc1012/Opengur)
+Based on [(Kennyc1012's app)](https://github.com/Kennyc1012/Opengur)
 
 <img src="https://github.com/puksh/Pokengur/raw/master/assets/ss1.png" height="400px"/>
 
