@@ -235,7 +235,9 @@ public class PhotoAdapter extends BaseRecyclerAdapter<ImgurPhoto> {
                     mListener.onPhotoTap(holder.itemView);
                 }
 
-                return true;
+                // Return false so the touch event is not consumed here and
+                // parent (e.g., ViewPager) can still detect swipes.
+                return false;
             }
         });
 
