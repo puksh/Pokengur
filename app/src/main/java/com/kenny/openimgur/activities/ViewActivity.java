@@ -568,17 +568,11 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener, 
                 break;
 
             case R.id.commentBtn:
-                if (mPagerAdapter == null) {
-                    Snackbar.make(mViewPager, R.string.error_invalid_data, Snackbar.LENGTH_LONG).show();
-                    break;
-                }
-
-                if (user != null) {
+                if (user != null && mPagerAdapter != null) {
                     DialogFragment fragment = CommentPopupFragment.createInstance(mPagerAdapter.getImgurItem(mCurrentPosition).getId(), null);
                     showDialogFragment(fragment, "comment");
                 } else {
-                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    fetchComments();
+                    Snackbar.make(mViewPager, R.string.user_not_logged_in, Snackbar.LENGTH_LONG).show();
                 }
                 break;
 
