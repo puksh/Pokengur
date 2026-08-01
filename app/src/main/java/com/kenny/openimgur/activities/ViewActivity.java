@@ -268,7 +268,10 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener, 
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                // prevent comment panel from intercepting swipe gestures during page transitions
+                if (mBottomSheetBehavior != null) {
+                    mBottomSheetBehavior.setDraggable(state == ViewPager.SCROLL_STATE_IDLE);
+                }
             }
         });
 
